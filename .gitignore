@@ -1,0 +1,15 @@
+#가상환경
+venv/
+.venv/
+env/
+
+# 파이썬 개시
+
+--ptcache--/
+*pyc
+
+# 환경변수
+.env
+.env.local
+
+
