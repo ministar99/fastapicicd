@@ -1,4 +1,4 @@
-∂ßname : FastAPI Auto Deploy
+name : FastAPI Auto Deploy
 
 on:
   push:
