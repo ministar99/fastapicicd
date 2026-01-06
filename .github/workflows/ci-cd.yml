@@ -1,0 +1,38 @@
+∂ßname : FastAPI Auto Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Server via BAstion
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FASTAPI_PRIVATE_IP }} # 목적지: FastAPI 서버 내부 IP
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          # Bastion(점프 호스트) 설정
+          proxy_host: ${{ secrets.BASTION_IP }}
+          proxy_username: ubuntu
+          proxy_key: ${{ secrets.EC2_SSH_KEY }}
+          
+          script: |
+            echo "1. Start Deployment"
+            cd /home/ubuntu/fastapiBack1  # 프로젝트 폴더로 이동
+            
+            echo "2. Git Pull"
+            git pull origin main
+            
+            echo "3. Update Dependencies"
+            # 가상환경 내의 pip를 직접 사용하여 라이브러리 업데이트
+            ./.venv/bin/pip install -r requirements.txt
+            
+            echo "4. Restart FastAPI Service"
+            # 우리가 만든 Systemd 서비스 재시작
+            sudo systemctl restart fastapi
+            
+            echo "5. Check Service Status"
+            sudo systemctl is-active fastapi
