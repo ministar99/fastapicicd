@@ -28,7 +28,7 @@ jobs:
             
             echo "3. Update Dependencies"
             # 가상환경 내의 pip를 직접 사용하여 라이브러리 업데이트
-            ./.venv/bin/pip install -r requirements.txt
+            pip install -r requirements.txt
             
             echo "4. Restart FastAPI Service"
             # 우리가 만든 Systemd 서비스 재시작
